@@ -11,7 +11,7 @@ SELECT   id,
          num_changes,
          date(created_at) AS date,
          tags['imagery_used'] AS imagery_used, 
-         tags['hashtags'] AS hashtags, -- this used to be a JSON array but spark doesn't like that
+         tags['hashtags'] AS hashtags, -- this should be an array, but spark doesn't like that
          tags['comment'] AS comment,
          tags['created_by'] AS created_by, 
          min_lat, max_lat, min_lon, max_lon
