@@ -33,3 +33,20 @@ Then, read the resulting file (30M rows) into a PySpark dataframe as shown in th
 - [ ] Break this down by editing software. The editor imagery defaults are going to be huge indicators of which imagery gets used.
 - [ ] Break this down geographically? 
 - [ ] Break this down by contribution type? (corporate, humanitarian, etc.)
+
+
+Which editing software is not including the `imagery_used` tag? 
+
+...JOSM, the answer is unequivocally JOSM; 27M of the 30M untagged changesets since 2015 are JOSM
+
+```sql
+SELECT substr(tags['created_by'],1,8) as editor,
+       year(created_at) as year,
+       count(id) as changesets,
+       count(distinct(uid)) as users
+FROM changesets
+where tags['imagery_used'] is null
+and created_at >= date '2015-01-01'
+group by year(created_at), substr(tags['created_by'],1,8)
+order by count(id) desc 
+```
